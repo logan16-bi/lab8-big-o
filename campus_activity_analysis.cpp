@@ -120,75 +120,68 @@ int main()
  *
  * C1 - Direct access
  * Answer:
- * n es la cantidad de actividades que hay en el arreglo activityIds.
- * La operacion representativa es leer un elemento del arreglo por su indice.
- * Es O(1): la funcion hace una sola lectura, activityIds[activityIndex], sin ningun
- * loop. En main se pide el indice 2 y devuelve 108 con una lectura; si el arreglo
- * tuviera 8000 actividades seguiria siendo una sola lectura.
+ * n es la cantidad de actividades que hay en el arreglo.
+ * Lo que se hace es leer una posicion del arreglo.
+ * Es O(1). La funcion solo hace activityIds[activityIndex], una sola lectura,
+ * y no tiene ningun loop. En main pide el indice 2 y devuelve 108. Si el arreglo
+ * fuera mucho mas grande seguiria siendo una sola lectura.
  *
  * C2 - Count active activities
  * Answer:
- * n es activityCount, la cantidad de actividades que se revisan.
- * La operacion representativa es revisar isActive[index] para ver si es true.
- * Es O(n): hay un solo loop que va de 0 hasta activityCount - 1 y revisa cada
- * actividad una vez. En main son 8 actividades, entonces 8 revisiones, y el
- * resultado fue 4 activas. Si activityCount se duplica, las revisiones tambien.
+ * n es activityCount, o sea cuantas actividades hay.
+ * Lo que se hace es mirar cada isActive[index] para ver si es true.
+ * Es O(n). Hay un loop que pasa por todas las actividades una vez. En main son 8
+ * actividades, asi que mira 8 y encuentra 4 activas. Si hubiera el doble de
+ * actividades miraria el doble.
  *
  * C3 - Binary search
  * Answer:
- * n es activityCount, la cantidad de IDs en el arreglo.
- * La operacion representativa es comparar el ID del medio con targetId
- * (comparisons++ en cada vuelta del while).
- * Es O(log n): en cada vuelta se descarta aproximadamente la mitad de los IDs
- * (first = middle + 1 o last = middle - 1). En main, buscar 140 en 8 IDs tomo 3
- * comparaciones: el medio fue 115, despues 136 y despues 140.
- * Requisito: los IDs tienen que estar ordenados de menor a mayor. Importa porque
- * el algoritmo decide cual mitad descartar suponiendo que si el ID del medio es
- * menor que el target, el target solo puede estar a la derecha. Si el arreglo
- * no esta ordenado puede descartar la mitad donde si estaba el ID y decir que no
- * existe aunque este en el arreglo.
+ * n es activityCount, la cantidad de IDs.
+ * Lo que se hace es comparar el ID del medio con el que se busca.
+ * Es O(log n). En cada vuelta del while se bota la mitad de los IDs que quedan,
+ * y por eso casi no aumenta cuando n crece. En main buscar 140 se hizo en 3
+ * comparaciones: primero 115, despues 136 y despues 140.
+ * Los IDs tienen que estar ordenados de menor a mayor. Importa porque el
+ * programa decide a que lado seguir buscando segun si el del medio es menor o
+ * mayor. Si el arreglo esta desordenado puede botar la mitad donde si estaba el
+ * numero y decir que no esta aunque si estaba.
  *
  * C4 - Halving steps
  * Answer:
- * Con itemCount = 16 los valores son 16, 8, 4, 2, 1. Son 4 pasos hasta llegar a 1.
- * La operacion que se repite es itemCount = itemCount / 2 junto con steps++.
- * Con 8 son 3 pasos, con 16 son 4 y con 32 son 5 (el output de main). Cada vez
- * que itemCount se duplica solo se agrega 1 paso. Eso es O(log n): para que el
- * numero de pasos suba 1 hay que duplicar la entrada.
+ * Empezando en 16, itemCount va 16, 8, 4, 2, 1. Son 4 pasos.
+ * Lo que se repite es dividir itemCount entre 2 y sumar 1 a steps.
+ * Con 8 son 3 pasos, con 16 son 4 y con 32 son 5. Cada vez que el numero se
+ * duplica solo se agrega 1 paso. Eso es O(log n).
  *
  * C5 - Distinct pairs
  * Answer:
- * El segundo loop empieza en first + 1 para no comparar una actividad contra si
- * misma y para no contar el mismo par dos veces (el par A-B y despues B-A). Asi
- * cada par distinto se visita una sola vez.
- * Si empezara en 0 se visitarian n * n pares: incluiria las comparaciones de una
- * actividad con ella misma y cada par repetido al reves, o sea mas del doble de
- * los pares reales. Con 4 actividades daria 16 en vez de 6.
- * La funcion es O(n^2): hace n(n-1)/2 visitas, 6 con 4 actividades y 28 con 8,
- * y el termino que domina es n^2.
+ * El segundo loop empieza en first + 1 para no comparar una actividad con ella
+ * misma y para no contar el mismo par dos veces (A con B y despues B con A).
+ * Asi cada par se cuenta una sola vez.
+ * Si empezara en 0 contaria n * n pares, o sea tambien las comparaciones con
+ * ella misma y los pares repetidos. Con 4 actividades daria 16 en vez de 6.
+ * La funcion es O(n^2). Hace n(n-1)/2 pares: 6 con 4 actividades y 28 con 8.
  *
  * C6 - Compare the observed patterns
  * Answer:
- * Acceso directo (O(1)): una sola lectura del indice 2, sin loop, y el costo no
- * depende de n.
- * Contar activas (O(n)): un loop que revisa las 8 actividades, el trabajo crece
- * a la par de n.
- * Halving (O(log n)): 3, 4 y 5 pasos para 8, 16 y 32. La entrada se cuadruplica
- * de 8 a 32 pero los pasos solo suben de 3 a 5.
- * Pares (O(n^2)): 6 pares con 4 actividades y 28 con 8. Al duplicar n los pares
- * se multiplican por mas de 4 (6 * 4 = 24, y salieron 28).
+ * Acceso directo: una sola lectura (O(1)), no depende de cuantas actividades
+ * haya.
+ * Contar activas: un loop que revisa las 8 actividades (O(n)), crece parejo con
+ * n.
+ * Halving: dio 3, 4 y 5 pasos con 8, 16 y 32. La entrada se multiplico por 4 y
+ * los pasos solo subieron 2 (O(log n)).
+ * Pares: 6 con 4 actividades y 28 con 8. Al duplicar n los pares se multiplicaron
+ * por mas de 4 (O(n^2)).
  * Del que menos crece al que mas crece: O(1), O(log n), O(n), O(n^2).
  *
  * C7 - Sorting decision
  * Answer:
- * Si los IDs llegan desordenados y solo voy a buscar una vez, o muy pocas veces,
- * prefiero linear search sin ordenar: cuesta O(n) y ordenar primero cuesta mas
- * que eso (selection sort es O(n^2) porque recorre varias veces la parte que
- * falta ordenar), asi que el sorting nunca se paga con una sola busqueda.
- * Si voy a hacer muchas busquedas sobre los mismos datos si puede valer la pena
- * ordenar una sola vez. Ese costo se paga una vez y despues cada busqueda baja
- * de O(n) a O(log n). Mientras mas busquedas hay, mas se reparte el costo de
- * ordenar entre todas. Tambien hay que ordenar de nuevo si se agregan datos
- * desordenados, entonces conviene cuando los datos casi no cambian.
+ * Si los IDs llegan desordenados y solo voy a buscar una vez, o pocas veces,
+ * uso linear search sin ordenar. Cuesta O(n), y ordenar primero cuesta mas
+ * (selection sort es O(n^2) porque repite recorridos), asi que no vale la pena
+ * por una sola busqueda.
+ * Si voy a buscar muchas veces en los mismos datos si conviene ordenar una vez.
+ * Ese costo se paga una sola vez y despues cada busqueda pasa de O(n) a O(log n).
+ * Mientras mas busquedas hagas mas se nota la ganancia.
  *
  */
